@@ -33,7 +33,10 @@ def click(event):
      определяет попал ли клик в круг или нет
     :return: 1 в случае попадания, 0 иначе
     '''
-    print(x,y,r) # для проверки выведем координаты центра x,y, и радиус r круга
+    if ((event.pos[0] - x)**2 + (event.pos[1] - y)**2)**0.5 <= r:
+        return 1
+    else:
+        return 0
 
 pygame.display.update()
 clock = pygame.time.Clock()
@@ -46,7 +49,7 @@ while not finished:
         if event.type == pygame.QUIT:
             finished = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            click(event)
+            print(click(event))
     new_ball()
     pygame.display.update()
     screen.fill(BLACK)
