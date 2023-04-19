@@ -16,6 +16,7 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 COLORS = [RED, BLUE, YELLOW, GREEN, MAGENTA, CYAN]
+number_balls = 5
 balls =[]
 counter = 0 # счетчик очков
 
@@ -37,15 +38,39 @@ def new_ball(x, y, r, delta_x, delta_y, color):
 
 def click(event):
     '''
-    будет удалять круги в которые попал щелчком и считать очки или
-    это будет делать функция processing_balls, пока не решил
+    Удаляет круги в которые попали и считает очки.
     '''
-    pass
+    global counter
+    flag = False # попали ли мы хоть в какой-то круг
+
+    for i in range(len(balls)):
+
+
+        if ((balls[i]['x'] - event.pos[0])**2 + (balls[i]['y'] - event.pos[1])**2)** 0.5 <= balls[i]['r']:
+            balls.pop(i)           # чтобы не было ошибки
+            balls.insert(i,0)      # вышли за пределы диапазона списка
+            counter += 1
+            flag = True
+
+    for i in range(balls.count(0)): # удаляем 0 из списка шаров
+        balls.remove(0)
+
+    if flag == False:
+        counter -= 1
+    print(counter)
+
+
+
+
+
+
+
 def processing_balls():
     '''
     отвечает за движение кругов.И случайным образом изменеят напрвление
     движения когда центр круга выходит за рамки экрана.
     '''
+
 
 
 
@@ -77,7 +102,9 @@ finished = False
 
 while not finished:
     clock.tick(FPS)
+
     for event in pygame.event.get():
+
 
         if event.type == pygame.QUIT:
             finished = True
@@ -87,7 +114,7 @@ while not finished:
     processing_balls()
 
 
-    if len(balls) <= 2: # ограничение числа кругов
+    if len(balls) <= number_balls: # ограничение числа кругов
         new_ball( x = randint(100,700),
                   y = randint(100,500),
                   r = randint(30,50),
