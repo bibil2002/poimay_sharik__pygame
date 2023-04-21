@@ -20,6 +20,9 @@ number_balls = 5
 balls =[]
 counter = 0 # счетчик очков
 
+name_player = input("Введите Ваше имя: ")
+
+
 def new_ball(x, y, r, delta_x, delta_y, color):
     '''
     добавляет новый круг
@@ -127,5 +130,9 @@ while not finished:
 
     pygame.display.update()
     screen.fill(BLACK)
+
+file = open('rating.txt', 'a')
+file.write(f"{name_player}:{counter}\n")
+file.close()
 
 pygame.quit()
