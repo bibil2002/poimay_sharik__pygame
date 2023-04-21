@@ -20,7 +20,7 @@ number_balls = 5
 balls =[]
 counter = 0 # счетчик очков
 
-name_player = input("Введите Ваше имя: ")
+name_player =input("Введите Ваше имя: ")
 
 
 def new_ball(x, y, r, delta_x, delta_y, color):
@@ -131,8 +131,37 @@ while not finished:
     pygame.display.update()
     screen.fill(BLACK)
 
-file = open('rating.txt', 'a')
-file.write(f"{name_player}:{counter}\n")
-file.close()
 
+
+
+file = open('rating.txt', 'a')          #добавляем текущий результат ради создания файла
+file.write(f"{name_player}:{counter}\n")#ятобф дальнейший код запускался без ошибки
+file.close()                            #при первом запуске
+
+
+table = []    #будем записывать данные из файла в формате [имя, баллы]
+l_numbers = [] # далее будет хранить список баллов от большего к меньшему
+with open('rating.txt','r') as file:
+    for i in file:
+        i = i[:-1]   # убираем символ переноса строки
+        table.append(i.split(':'))
+        l_numbers.append(int(i[i.find(':') + 1:]))
+
+l_numbers.sort()
+l_numbers.reverse()
+new_table = []  #будет хранить отсортированные,от большего
+                #количества баллов к меньшему, пары в формате [имя,баллы]
+
+for i in range(len(l_numbers)):
+# l_numbers хранит отсортированные от большего к неменьшему баллы
+    for j in range(len(table)):
+        if table[j][1] == str(l_numbers[i]): # ищем пару [имя, баллы] по всему списку table с баллами, так чтобы после каждой этерации
+                                             #верхнего for число баллов неубывало
+            new_table.append([table[j][0], l_numbers[i]]) #(имя,баллы)
+            table[j][1] = 'no' # чтобы баллы добавленного элемента больше не совпадали не с каким  str(l_numbers[i])
+
+file = open('rating.txt', 'w')
+for i in new_table:
+    file.write(f"{i[0]}:{i[1]}\n")
+file.close()
 pygame.quit()
